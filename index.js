@@ -2,6 +2,7 @@ const cron = require('node-cron');
 const axios = require('axios');
 
 const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=CA&allowCountries=CA"
+const cron_schedule = "0 17 * * THU"
 // console.log(epic_url)
 // console.log(process.env.DISCORD_WEBHOOK)
 
@@ -17,6 +18,7 @@ async function check_store() {
 
     var skip = true
     const title = game.title
+    const slug = game.productSlug
     const original_price = game.price.totalPrice.fmtPrice.originalPrice
     const publisher = game.seller.name
     const description = game.description
@@ -49,6 +51,7 @@ async function check_store() {
     if (!skip) {
       const found_game = {
         title: title,
+        url_slug: slug,
         original_price: original_price,
         publisher: publisher,
         description: description,
@@ -78,6 +81,7 @@ function format_message(game) {
   const message = [
     {
       title: `${game.title}`,
+      url: `https://store.epicgames.com/en-US/p/${game.url_slug}`,
       color: `${game.start_date == null ? now_colour : coming_soon_colour}`,
       image: {
         url: game.thumbnail
@@ -125,27 +129,29 @@ function send_discord(game) {
   };
   // console.log(config)
   axios(config)
-    .then((response) => {
-      console.log("Webhook delivered successfully");
-      return response;
-    })
-    .catch((error) => {
-      console.log(error);
-      return error;
-    });
+    // .then((response) => {
+    //   console.log("Webhook delivered successfully");
+    //   return response;
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    //   return error;
+    // });
 }
 
 // const fetch_games = await check_store()
 // fetch_games.forEach((game) => {
 //   send_discord(game)
 // })
-// check_store().then(games => {
-//   games.forEach((game) => {
-//     send_discord(game)
-//   })
-// })
 
-cron.schedule('*/1 * * * *', () => {
+// FOR TESTING
+check_store().then(games => {
+  games.forEach((game) => {
+    send_discord(game)
+  })
+})
+
+cron.schedule(cron_schedule, () => {
   console.log('Checking Epic Games Store for Freebies :) ...');
   check_store().then(games => {
     games.forEach((game) => {
