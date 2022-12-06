@@ -3,8 +3,20 @@ const axios = require('axios');
 
 const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=CA&allowCountries=CA"
 const cron_schedule = "0 17 * * THU"
+// const cron_schedule = "0 * * * *"
 // console.log(epic_url)
 // console.log(process.env.DISCORD_WEBHOOK)
+
+// This section for running ...
+const express = require("express")
+const app = express()
+
+app.get("/", (req, res) => {
+  res.send("Uptime")
+})
+
+app.listen(3030)
+
 
 async function check_store() {
   const res = await axios.get(epic_url);
@@ -80,7 +92,7 @@ function format_message(game) {
   const coming_soon_text = "Start Date"
   const message = [
     {
-      title: `${game.title}`,
+      title: `[${game.start_date == null ? "THIS WEEK" : "COMING SOON"}] ${game.title}`,
       url: `https://store.epicgames.com/en-US/p/${game.url_slug}`,
       color: `${game.start_date == null ? now_colour : coming_soon_colour}`,
       image: {
@@ -129,14 +141,14 @@ function send_discord(game) {
   };
   // console.log(config)
   axios(config)
-    // .then((response) => {
-    //   console.log("Webhook delivered successfully");
-    //   return response;
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    //   return error;
-    // });
+  // .then((response) => {
+  //   console.log("Webhook delivered successfully");
+  //   return response;
+  // })
+  // .catch((error) => {
+  //   console.log(error);
+  //   return error;
+  // });
 }
 
 // const fetch_games = await check_store()
@@ -145,11 +157,11 @@ function send_discord(game) {
 // })
 
 // FOR TESTING
-check_store().then(games => {
-  games.forEach((game) => {
-    send_discord(game)
-  })
-})
+// check_store().then(games => {
+//   games.forEach((game) => {
+//     send_discord(game)
+//   })
+// })
 
 cron.schedule(cron_schedule, () => {
   console.log('Checking Epic Games Store for Freebies :) ...');
