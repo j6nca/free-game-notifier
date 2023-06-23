@@ -1,29 +1,8 @@
-const cron = require('node-cron');
 const axios = require('axios');
 
 const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=CA&allowCountries=CA"
 
-// ENVIRONMENT
-const ENVS = { test: "TEST", prod: "PROD" }
-// const env = ENVS["test"]
-var discord_webhook = ''
-const env = ENVS["prod"]
-console.log(env)
-if (env == ENVS["test"]) {
-  discord_webhook = process.env.TEST_DISCORD_WEBHOOK
-} else if (env == ENVS["prod"]) {
-  discord_webhook = process.env.PROD_DISCORD_WEBHOOK
-}
-
-
-
-// SCHEDULING
-// WEEKLY
-// const cron_schedule = "0 18 * * THU"
-// DAILY
-const cron_schedule = "5 16 * * *"
-// console.log(epic_url)
-// console.log(process.env.DISCORD_WEBHOOK)
+var discord_webhook = process.env.DISCORD_WEBHOOK
 
 // This section for running ...
 const express = require("express");
@@ -40,11 +19,10 @@ async function check_store() {
   const res = await axios.get(epic_url);
   const res_json = JSON.stringify(res.data)
   // console.log(res_json)
-  // console.log(res.data.data.Catalog.searchStore.elements)
+  console.log(res.data.data.Catalog.searchStore.elements)
   const games = res.data.data.Catalog.searchStore.elements
   var game_list = []
   games.forEach((game) => {
-    // console.log(game.title)
 
     var skip = true
     const title = game.title
@@ -200,30 +178,3 @@ function send_discord(game) {
 //     send_discord(game)
 //   })
 // })
-
-if (env == ENVS["test"]) {
-  // FOR TESTING
-  try {
-    console.log('TEST: Checking Epic Games Store for Freebies :) ...');
-    check_store().then(games => {
-      games.forEach((game) => {
-        send_discord(game)
-      })
-    })
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-cron.schedule(cron_schedule, () => {
-  try {
-    console.log('Checking Epic Games Store for Freebies :) ...');
-    check_store().then(games => {
-      games.forEach((game) => {
-        send_discord(game)
-      })
-    })
-  } catch (e) {
-    console.log(e)
-  }
-});

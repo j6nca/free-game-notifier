@@ -1,0 +1,22 @@
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '30 11 * * THU'
+  push:
+
+jobs:
+  check_free_games:
+    name: Check Epic Games Freebies
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@tempo-io'
+    
