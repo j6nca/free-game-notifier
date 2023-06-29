@@ -4,17 +4,6 @@ const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPr
 
 var discord_webhook = process.env.DISCORD_WEBHOOK
 
-// This section for running ...
-const express = require("express");
-const app = express()
-
-app.get("/", (req, res) => {
-  res.send("Uptime")
-})
-
-app.listen(3030)
-
-
 async function check_store() {
   const res = await axios.get(epic_url);
   const res_json = JSON.stringify(res.data)
@@ -41,12 +30,6 @@ async function check_store() {
       skip = false
     }
 
-    // 12 Days of Christmas it seems to be using this check
-    if (game.promotions.promotionalOffers[0] != null) {
-      // console.log("price", game.price.lineOffers[0].appliedRules[0].endDate)
-      end_date = game.promotions.promotionalOffers[0].promotionalOffers[0].endDate
-      skip = false
-    }
     // Use second image so its not the default gift image from epic
     if (game.keyImages[1] != null) {
       thumbnail = game.keyImages[1].url
@@ -61,6 +44,12 @@ async function check_store() {
 
     // If game is projected to be ON SALE soon
     if (game.promotions != null) {
+      // 12 Days of Christmas it seems to be using this check
+      if (game.promotions.promotionalOffers[0] != null) {
+        // console.log("price", game.price.lineOffers[0].appliedRules[0].endDate)
+        end_date = game.promotions.promotionalOffers[0].promotionalOffers[0].endDate
+        skip = false
+      }
       // console.log(game.promotions.upcomingPromotionalOffers)
       if (game.promotions.upcomingPromotionalOffers[0] != null) {
         if (game.promotions.upcomingPromotionalOffers[0].promotionalOffers[0] != null) {
@@ -172,9 +161,9 @@ function send_discord(game) {
 // })
 
 // MANUAL
-// console.log('TEST: Checking Epic Games Store for Freebies :) ...');
-// check_store().then(games => {
-//   games.forEach((game) => {
-//     send_discord(game)
-//   })
-// })
+console.log('TEST: Checking Epic Games Store for Freebies :) ...');
+check_store().then(games => {
+  games.forEach((game) => {
+    send_discord(game)
+  })
+})
