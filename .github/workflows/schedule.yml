@@ -1,0 +1,27 @@
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '30 21 * * THU'
+  # push:
+
+jobs:
+  check_free_games:
+    name: Check Epic Games Freebies
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: node index.js
