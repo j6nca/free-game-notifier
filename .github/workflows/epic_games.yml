@@ -1,3 +1,4 @@
+name: Check Epic Games
 on:
   workflow_dispatch:
   schedule:
