@@ -28,3 +28,8 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: node index.js
+
+      - name: Notify on failure
+        if: ${{ failure() }}
+        run: curl -H "Content-Type: application/json" -d '{"username": "Github Actions", "content": "Workflow failed at: https://github.com/${{ GITHUB_REPOSITORY }}/actions/runs/${{ github.run_id }}"}' "${{ secrets.DISCORD_ALERTS_WEBHOOK }}"
+
