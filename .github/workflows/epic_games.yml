@@ -31,5 +31,10 @@ jobs:
 
       - name: Notify on failure
         if: ${{ failure() }}
-        run: curl -H "Content-Type: application/json" -d '{"username": "Github Actions", "content": "Workflow failed at: https://github.com/${{ GITHUB_REPOSITORY }}/actions/runs/${{ github.run_id }}"}' "${{ secrets.DISCORD_ALERTS_WEBHOOK }}"
+        env:
+          DISCORD_MESSAGE: "Workflow failed at: https://github.com/${{ GITHUB_REPOSITORY }}/actions/runs/${{ github.run_id }}"
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d '{"username": "Github Actions", "content": "$DISCORD_MESSAGE"}' \
+          "${{ secrets.DISCORD_ALERTS_WEBHOOK }}"
 
