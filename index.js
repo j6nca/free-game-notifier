@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=CA&allowCountries=CA"
-
+const sendUpcoming = false;
 var discord_webhook = process.env.DISCORD_WEBHOOK
 
 async function check_store() {
@@ -64,6 +64,11 @@ async function check_store() {
     if (game.title == "Mystery Game") {
       skip = true
     }
+    
+    if (!sendUpcoming && game.start_date == null){
+      skip = true
+    }
+    
     if (!skip) {
       const found_game = {
         title: title,
