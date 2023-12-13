@@ -2,8 +2,9 @@ name: Check Epic Games
 on:
   workflow_dispatch:
   schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '30 23 * * THU'
+    # weekly epic games schedule - disable for christmas daily mystery games
+    # - cron:  '30 23 * * THU'
+    - cron: '30 23 13-28 12 *'
   # push:
 
 jobs:
