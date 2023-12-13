@@ -2,8 +2,11 @@ name: Check Epic Games
 on:
   workflow_dispatch:
   schedule:
-    # weekly epic games schedule - disable for christmas daily mystery games
     # - cron:  '30 23 * * THU'
+    # weekly regular epic games schedule
+    - cron: '30 23 * 1-11 THU'
+    - cron: '30 23 1-12,29-31 12 THU'
+    # 15 days of december mystery games
     - cron: '30 23 13-28 12 *'
   # push:
 
