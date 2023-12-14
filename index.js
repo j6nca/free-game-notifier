@@ -65,7 +65,7 @@ async function check_store() {
       skip = true
     }
     
-    if (!sendUpcoming && start_date == null){
+    if (!sendUpcoming && end_date == null){
       skip = true
     }
     
