@@ -7,8 +7,7 @@ on:
     - cron: '30 23 * 1-11 THU'
     # - cron: '30 23 1-12,29-31 12 THU'
     # 15 days of december mystery games (daily)
-    # - cron: '30 23 13-28 12 *'
-    - cron:  '30 23 * 12 WED'
+    - cron: '30 23 13-28 12 *'
   # push:
 
 jobs:
