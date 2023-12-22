@@ -38,6 +38,6 @@ jobs:
           DISCORD_MESSAGE: "Workflow failed at: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         run: |
           curl -H "Content-Type: application/json" \
-          -d '{"username": "Github Actions", "content": "$DISCORD_MESSAGE"}' \
+          -d '{"username": "${{ github.repository }}/${{ github.workflow }}", "content": "$DISCORD_MESSAGE"}' \
           "${{ secrets.DISCORD_ALERTS_WEBHOOK }}"
 
