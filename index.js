@@ -1,7 +1,11 @@
 const axios = require('axios');
 
+// Endpoint for epic games freebies
 const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=CA&allowCountries=CA"
-const sendUpcoming = false;
+
+// Configs
+// Set whether or not to show upcoming sale games Format: SEND_UPCOMING=true/false
+const sendUpcoming = (process.env.SEND_UPCOMING ?? "false") === "true";
 // Set the target discord server(s) here. Format: DISCORD_WEBHOOK=url1,url2 ...
 const discord_webhook = process.env.DISCORD_WEBHOOK
 
