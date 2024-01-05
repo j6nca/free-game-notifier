@@ -2,7 +2,8 @@ const axios = require('axios');
 
 const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=CA&allowCountries=CA"
 const sendUpcoming = false;
-var discord_webhook = process.env.DISCORD_WEBHOOK
+// Set the target discord server(s) here. Format: DISCORD_WEBHOOK=url1,url2 ...
+const discord_webhook = process.env.DISCORD_WEBHOOK
 
 async function check_store() {
   const res = await axios.get(epic_url);
@@ -130,7 +131,7 @@ function format_message(game) {
   return message
 }
 
-function send_discord(game) {
+function send_discord(game, webhook) {
   console.log("=====================================================")
   console.log(game.title)
   // console.log(game.publisher)
@@ -144,7 +145,7 @@ function send_discord(game) {
   const data = JSON.stringify({ embeds });
   const config = {
     method: "POST",
-    url: discord_webhook, // https://discord.com/webhook/url/here
+    url: webhook,
     headers: { "Content-Type": "application/json" },
     data: data,
   };
@@ -169,6 +170,9 @@ function send_discord(game) {
 console.log('TEST: Checking Epic Games Store for Freebies :) ...');
 check_store().then(games => {
   games.forEach((game) => {
-    send_discord(game)
+    var webhooks = discord_webhook.split(",")
+    webhooks.forEach((webhook) => {
+      send_discord(game, webhook)
+    })
   })
 })
