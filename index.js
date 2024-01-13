@@ -2,7 +2,6 @@ const axios = require('axios');
 
 // Endpoint for epic games freebies
 const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=CA&allowCountries=CA"
-const page_base = "https://store.epicgames.com/en-US/p/"
 // Configs
 // Set whether or not to show upcoming sale games Format: SEND_UPCOMING=true/false
 const sendUpcoming = (process.env.SEND_UPCOMING ?? "false") === "true";
@@ -77,7 +76,7 @@ async function check_store() {
     if (!skip) {
       const found_game = {
         title: title,
-        url_slug: page_base + slug,
+        url_slug: slug,
         original_price: original_price,
         publisher: publisher,
         description: description,
