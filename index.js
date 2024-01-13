@@ -2,7 +2,7 @@ const axios = require('axios');
 
 // Endpoint for epic games freebies
 const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=CA&allowCountries=CA"
-
+const page_base = "https://store.epicgames.com/en-US/p/"
 // Configs
 // Set whether or not to show upcoming sale games Format: SEND_UPCOMING=true/false
 const sendUpcoming = (process.env.SEND_UPCOMING ?? "false") === "true";
@@ -20,7 +20,7 @@ async function check_store() {
 
     var skip = true
     const title = game.title
-    const slug = game.productSlug
+    const slug = game.catalogNs.mappings[0].pageSlug
     const original_price = game.price.totalPrice.fmtPrice.originalPrice
     const publisher = game.seller.name
     const description = game.description
@@ -77,7 +77,7 @@ async function check_store() {
     if (!skip) {
       const found_game = {
         title: title,
-        url_slug: slug,
+        url_slug: page_base + slug,
         original_price: original_price,
         publisher: publisher,
         description: description,
@@ -107,7 +107,7 @@ function format_message(game) {
   const message = [
     {
       title: `[${game.start_date == null ? "NOW" : "COMING SOON"}] ${game.title}`,
-      url: `https://store.epicgames.com/en-US/p/${game.url_slug}`,
+      url: game.url_slug,
       color: `${game.start_date == null ? now_colour : coming_soon_colour}`,
       image: {
         url: game.thumbnail
