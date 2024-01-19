@@ -12,9 +12,8 @@ A script to check Epic Games store weekly for new freebies, pushes notifications
 
 ### Docker
 ```
-docker run j6nca/free-game-notifier:latest npm run start \
--e SEND_UPCOMING=true \
--e DISCORD_WEBHOOK='foobar'
+docker run -e SEND_UPCOMING=true -e DISCORD_WEBHOOK='foobar' \
+j6nca/free-game-notifier:latest npm run start
 ```
 
 ### Kubernetes
