@@ -8,7 +8,7 @@ spec:
       containers:
       - name: free-game-notifier
         image: j6nca/free-game-notifier:latest
-        command: ["node epic_games.js"]
+        command: ["npm run start"]
         # Setting configs
         # Note: For non-secret values, you can also source a configmap
         env:
