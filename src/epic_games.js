@@ -1,5 +1,5 @@
 const axios = require('axios');
-
+require('dotenv').config()
 // Endpoint for epic games freebies
 const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=CA&allowCountries=CA"
 const page_base = "https://store.epicgames.com/en-US/p/"
