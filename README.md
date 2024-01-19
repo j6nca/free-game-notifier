@@ -17,4 +17,4 @@ j6nca/free-game-notifier:latest npm run start
 ```
 
 ### Kubernetes
-See [./examples/kubernetes/job.yml](https://github.com/j6nca/free-game-notifier/blob/main/examples/kubernetes/epic_games.yml)
+See [./examples/kubernetes/job.yml](https://github.com/j6nca/free-game-notifier/blob/main/examples/kubernetes/job.yml)
