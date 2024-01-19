@@ -41,6 +41,6 @@ metadata:
   name: free-game-notifier-secrets
 type: Opaque
 data:
-  DISCORD_WEBHOOK: 
+  DISCORD_WEBHOOK: your-base64-encoded-webhook(s)-here
 
 ---
