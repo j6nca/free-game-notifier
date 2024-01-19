@@ -1,4 +1,4 @@
-# discord-epic-games
+# free-game-notifier
 A script to check Epic Games store weekly for new freebies, pushes notifications to discord.
 
 ## Configuration
@@ -11,10 +11,7 @@ A script to check Epic Games store weekly for new freebies, pushes notifications
 ## Usage
 
 ### Docker
-Example
-```
-```
+See [./examples/docker/docker-compose.yml]()
 
 ### Kubernetes
-```
-```
+See [./examples/kubernetes/job.yml]()
