@@ -5,13 +5,13 @@ const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPr
 const page_base = "https://store.epicgames.com/en-US/p/"
 // Configs
 // Set whether or not to show upcoming sale games Format: SEND_UPCOMING=true/false
-const sendUpcoming = (process.env.SEND_UPCOMING ?? "false") === "true";
+const sendUpcoming = process.env.SEND_UPCOMING;
 // Set the target discord server(s) here. Format: DISCORD_WEBHOOK=url1,url2 ...
 const discord_webhook = process.env.DISCORD_WEBHOOK
 
 async function check_store() {
   const res = await axios.get(epic_url);
-  const res_json = JSON.stringify(res.data)
+  // const res_json = JSON.stringify(res.data)
   // console.log(res_json)
   console.log(res.data.data.Catalog.searchStore.elements)
   const games = res.data.data.Catalog.searchStore.elements

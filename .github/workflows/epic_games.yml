@@ -51,7 +51,7 @@ jobs:
         env:
           SEND_UPCOMING: ${{ false }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        run: node index.js
+        run: node epic_games.js
 
       - name: Notify on failure
         if: ${{ failure() }}

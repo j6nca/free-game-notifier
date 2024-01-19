@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: free-game-notifier
+spec:
+  template:
+    spec:
+      containers:
+      - name: free-game-notifier
+        image: j6nca/free-game-notifier:latest
+        command: ["node epic_games.js"]
+        # Setting configs
+        # Note: For non-secret values, you can also source a configmap
+        env:
+          - name: SEND_UPCOMING
+            value: "true"
+        envFrom:
+          - configMapRef:
+              # Mount config from configmap
+              name: "free-game-notifier-config"
+          - secretRef:
+              # Mount config from secrets
+              name: "free-game-notifier-secrets"
+      restartPolicy: Never
+  backoffLimit: 4
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: free-game-notifier-config
+data:
+  SEND_UPCOMING: true
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: free-game-notifier-secrets
+type: Opaque
+data:
+  DISCORD_WEBHOOK: 
+
+---
