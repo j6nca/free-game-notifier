@@ -5,7 +5,7 @@ const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPr
 const page_base = "https://store.epicgames.com/en-US/p/"
 // Configs
 // Set whether or not to show upcoming sale games Format: SEND_UPCOMING=true/false
-const sendUpcoming = process.env.SEND_UPCOMING;
+const sendUpcoming = process.env.SEND_UPCOMING === "true";
 // Set the target discord server(s) here. Format: DISCORD_WEBHOOK=url1,url2 ...
 const discord_webhook = process.env.DISCORD_WEBHOOK
 
