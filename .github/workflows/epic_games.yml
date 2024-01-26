@@ -22,21 +22,11 @@ jobs:
   check_free_games:
     name: Check Epic Games Freebies
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'production' }}
     steps:
 
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Set variables if workflow_dispatch
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          echo "ENV=${{ inputs.environment }}" >> $GITHUB_ENV
-
-      # Default to production
-      - name: Set variables if scheduled
-        if: github.event_name == 'schedule'
-        run: |
-          echo "ENV=production" >> $GITHUB_ENV
 
       - name: Set up NodeJS
         uses: actions/setup-node@v3
@@ -47,7 +37,7 @@ jobs:
         run: npm ci
 
       - name: Run
-        environment: ${{ env.ENV }}
+        
         env:
           SEND_UPCOMING: ${{ false }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
