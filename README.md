@@ -18,3 +18,7 @@ j6nca/free-game-notifier:latest npm run start
 
 ### Kubernetes
 See [./examples/kubernetes/job.yml](https://github.com/j6nca/free-game-notifier/blob/main/examples/kubernetes/job.yml)
+Note: ensure to modify manifest with your appropriate configuration
+```
+kubectl apply -f ./examples/kubernetes/job.yml
+```
