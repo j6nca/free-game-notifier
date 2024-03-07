@@ -48,7 +48,7 @@ jobs:
         with:
           images: ${{ github.repository }}
           tags: |
-            type=semver,pattern={{version}}
+            type=semver,pattern={{version}},value=${{ steps.getver.outputs.version }}
       
       - name: Build and push Docker image
         uses: docker/build-push-action@v5.1.0
@@ -80,6 +80,6 @@ jobs:
           DISCORD_MESSAGE: "Workflow failed at: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         run: |
           curl -H "Content-Type: application/json" \
-          -d '{"username": "${{ github.repository }}/${{ github.workflow }}", "content": "${{ env.DISCORD_WEBHOOK }}"}' \
+          -d '{"username": "${{ github.repository }}/${{ github.workflow }}", "content": "${{ env.DISCORD_MESSAGE }}"}' \
           "${{ secrets.DISCORD_ALERTS_WEBHOOK }}"
 
