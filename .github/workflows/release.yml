@@ -26,17 +26,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Get version from project
+      - name: Bump and push version
         id: getver
         run: |
-          npm version minor
-          echo "version=$(npm pkg get version | tr -d "'\"")" >> $GITHUB_OUTPUT
-        
-      - name: Push version bump and tag
-        run: |
-          git pull --rebase --autostash
           git config --global user.email "actions@github.com"
           git config --global user.name "Github Actions"
+          npm version minor
+          echo "version=$(npm pkg get version | tr -d "'\"")" >> $GITHUB_OUTPUT
+          git pull --rebase --autostash
           git add package.json
           git commit -m "Version bump: ${{ steps.getver.outputs.version }}"
           git push --follow-tags
