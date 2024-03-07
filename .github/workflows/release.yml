@@ -34,8 +34,6 @@ jobs:
           npm version minor
           echo "version=$(npm pkg get version | tr -d "'\"")" >> $GITHUB_OUTPUT
           git pull --rebase --autostash
-          git add package.json
-          git commit -m "Version bump: ${{ steps.getver.outputs.version }}"
           git push --follow-tags
 
       - name: Log in to Docker Hub
@@ -82,6 +80,6 @@ jobs:
           DISCORD_MESSAGE: "Workflow failed at: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         run: |
           curl -H "Content-Type: application/json" \
-          -d '{"username": "${{ github.repository }}/${{ github.workflow }}", "content": "$DISCORD_MESSAGE"}' \
+          -d '{"username": "${{ github.repository }}/${{ github.workflow }}", "content": "${{ env.DISCORD_WEBHOOK }}"}' \
           "${{ secrets.DISCORD_ALERTS_WEBHOOK }}"
 
