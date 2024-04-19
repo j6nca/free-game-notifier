@@ -23,7 +23,7 @@ env:
 
 defaults:
   run:
-    working-directory: ./{{ env.WORKING_DIRECTORY }}
+    working-directory: ./bot
 
 jobs:
   check_free_games:

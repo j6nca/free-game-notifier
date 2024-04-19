@@ -17,7 +17,7 @@ env:
 
 defaults:
   run:
-    working-directory: ./{{ env.WORKING_DIRECTORY }}
+    working-directory: ./bot
 
 jobs:
   build:
