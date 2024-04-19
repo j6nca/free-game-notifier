@@ -64,6 +64,11 @@ async function check_store() {
     if (game.title == "Mystery Game") {
       skip = true
     }
+
+    // Skip any false-positives (may just be on sale, or non-updated)
+    if (game.price.totalPrice.discountPrice != 0){
+      skip = true
+    }
     
     if (!sendUpcoming && end_date == null){
       skip = true
@@ -111,7 +116,7 @@ function format_message(game) {
         },
         {
           name: "Original Price",
-          value: `${game.original_price}`,
+          value: `~~$${game.original_price}~~`,
         },
         {
           name: "Description",
@@ -122,7 +127,7 @@ function format_message(game) {
           value: `${game.start_date == null ? game.end_date : game.start_date}`
         },
         {
-          name: `${game.start_date == null ? now_text : coming_soon_text}`,
+          name: '',
           value: `[Open in Epic Launcher](${redirect_base + game.url_slug})`
         },
       ],
