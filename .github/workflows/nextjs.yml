@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  WORKING_DIRECTORY: ./site
+  WORKING_DIRECTORY: site
 
 defaults:
   run:
