@@ -10,6 +10,7 @@ function Search() {
   var content = game == null ? urlPrefix : urlPrefix + "/p/" + game
  
   redirect(content)
+  return <p></p>
 }
 
 export default function Page() {
