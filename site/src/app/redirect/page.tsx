@@ -9,14 +9,13 @@ function Search() {
   const urlPrefix = "0; URL=com.epicgames.launcher://store"
   var content = game == null ? urlPrefix : urlPrefix + "/p/" + game
  
-  return <head className='redirect'>
-      <meta http-equiv="refresh" content={content}/>
-      redirecting to desktop app ...
-    </head>
+  return <meta http-equiv="refresh" content={content}/>
 }
 
 export default function Page() {
-  return <Suspense>
-    <Search/>
-  </Suspense>
+  return <head className='redirect'>
+    <Suspense>
+      <Search/>
+    </Suspense>
+  </head>
 }
