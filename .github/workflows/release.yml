@@ -9,6 +9,8 @@ concurrency:
 permissions:
   contents: write
 
+env:
+  WORKING_DIRECTORY: bot
 defaults:
   run:
     working-directory: ./bot
