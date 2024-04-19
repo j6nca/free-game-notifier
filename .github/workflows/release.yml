@@ -9,6 +9,10 @@ concurrency:
 permissions:
   contents: write
 
+defaults:
+  run:
+    working-directory: ./bot
+
 jobs:
   build:
     name: Build and publish image
