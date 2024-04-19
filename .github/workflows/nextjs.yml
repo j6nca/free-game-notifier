@@ -31,7 +31,7 @@ env:
 
 defaults:
   run:
-    working-directory: ./{{$.env.WORKING_DIRECTORY}}
+    working-directory: ./{{ env.WORKING_DIRECTORY }}
 
 jobs:
   # Build job
