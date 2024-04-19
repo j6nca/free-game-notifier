@@ -20,7 +20,6 @@ async function check_store() {
   const games = res.data.data.Catalog.searchStore.elements
   var game_list = []
   games.forEach((game) => {
-    console.log(game)
     var skip = true
     const title = game.title
     console.log(game.title)
@@ -50,11 +49,15 @@ async function check_store() {
       // 12 Days of Christmas it seems to be using this check
       if (game.promotions.promotionalOffers[0] != null) {
         end_date = game.promotions.promotionalOffers[0].promotionalOffers[0].endDate
+        date = new Date(Date.parse(end_date))
+        end_date = date.toLocaleString('en-us')
         skip = false
       }
       if (game.promotions.upcomingPromotionalOffers[0] != null) {
         if (game.promotions.upcomingPromotionalOffers[0].promotionalOffers[0] != null) {
           start_date = game.promotions.upcomingPromotionalOffers[0].promotionalOffers[0].startDate
+          date = new Date(Date.parse(start_date))
+          start_date = date.toLocaleString('en-us')
           skip = false
         }
       }
