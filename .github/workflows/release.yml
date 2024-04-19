@@ -9,6 +9,13 @@ concurrency:
 permissions:
   contents: write
 
+environment:
+  WORKING_DIRECTORY: 'bot'
+
+defaults:
+  run:
+    working-directory: ./{{$.env.WORKING_DIRECTORY}}
+
 jobs:
   build:
     name: Build and publish image

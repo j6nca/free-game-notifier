@@ -3,34 +3,39 @@ require('dotenv').config()
 // Endpoint for epic games freebies
 const epic_url = "https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?locale=en-US&country=CA&allowCountries=CA"
 const page_base = "https://store.epicgames.com/en-US/p/"
+const redirect_base = "https://freebies.j6n.ca/redirect?game="
 // Configs
 // Set whether or not to show upcoming sale games Format: SEND_UPCOMING=true/false
 const sendUpcoming = process.env.SEND_UPCOMING === "true";
 // Set the target discord server(s) here. Format: DISCORD_WEBHOOK=url1,url2 ...
 const discord_webhook = process.env.DISCORD_WEBHOOK
+// Enable/disable notifications (primarily for testing) default: true
+const notify = process.env.NOTIFY === undefined ? true : process.env.NOTIFY === "true"
 
 async function check_store() {
   const res = await axios.get(epic_url);
   // const res_json = JSON.stringify(res.data)
   // console.log(res_json)
-  console.log(res.data.data.Catalog.searchStore.elements)
+  // console.log(res.data.data.Catalog.searchStore.elements)
   const games = res.data.data.Catalog.searchStore.elements
   var game_list = []
   games.forEach((game) => {
-
+    console.log(game)
     var skip = true
     const title = game.title
-    const slug = game.catalogNs.mappings[0].pageSlug
-    const original_price = game.price.totalPrice.fmtPrice.originalPrice
+    console.log(game.title)
+    const slug = game.catalogNs.mappings != null ? game.catalogNs.mappings[0].pageSlug : "error"
+    console.log(slug)
+    var original_price = game.price.totalPrice.fmtPrice.originalPrice
+    original_price = parseFloat(original_price.replace(/[^0-9\.]+/g,"")).toFixed(2).toString()
     const publisher = game.seller.name
     const description = game.description
-    var thumbnail = game.keyImages[0].url
+    var thumbnail = game.keyImages != null ? game.keyImages[0].url : "error"
     var start_date = null
     var end_date = null
 
-    // If game is currently ON SALE
+    // Check if game is currently ON SALE
     if (game.price.lineOffers[0].appliedRules[0] != null) {
-      // console.log("price", game.price.lineOffers[0].appliedRules[0].endDate)
       end_date = game.price.lineOffers[0].appliedRules[0].endDate
       skip = false
     }
@@ -40,25 +45,15 @@ async function check_store() {
       thumbnail = game.keyImages[1].url
     }
 
-
-    // console.log(game.price.totalPrice.fmtPrice.originalPrice)
-    // console.log(game.seller.name)
-    // console.log(game.description)
-
-    // console.log(game.keyImages[0].url)
-
     // If game is projected to be ON SALE soon
     if (game.promotions != null) {
       // 12 Days of Christmas it seems to be using this check
       if (game.promotions.promotionalOffers[0] != null) {
-        // console.log("price", game.price.lineOffers[0].appliedRules[0].endDate)
         end_date = game.promotions.promotionalOffers[0].promotionalOffers[0].endDate
         skip = false
       }
-      // console.log(game.promotions.upcomingPromotionalOffers)
       if (game.promotions.upcomingPromotionalOffers[0] != null) {
         if (game.promotions.upcomingPromotionalOffers[0].promotionalOffers[0] != null) {
-          // console.log(game.promotions.upcomingPromotionalOffers[0].promotionalOffers[0].startDate)
           start_date = game.promotions.upcomingPromotionalOffers[0].promotionalOffers[0].startDate
           skip = false
         }
@@ -77,7 +72,7 @@ async function check_store() {
     if (!skip) {
       const found_game = {
         title: title,
-        url_slug: page_base + slug,
+        url_slug: slug,
         original_price: original_price,
         publisher: publisher,
         description: description,
@@ -86,10 +81,7 @@ async function check_store() {
         end_date: end_date,
       }
       game_list.push(found_game)
-      // send_discord(title, publisher, original_price, start_date, end_date, thumbnail, description)
     }
-
-    // .upcomingPromotionalOffers.promotionalOffers
   })
   const ordered_game_list = game_list.sort(
     function(a, b) {
@@ -107,7 +99,7 @@ function format_message(game) {
   const message = [
     {
       title: `[${game.start_date == null ? "NOW" : "COMING SOON"}] ${game.title}`,
-      url: game.url_slug,
+      url: page_base + game.url_slug,
       color: `${game.start_date == null ? now_colour : coming_soon_colour}`,
       image: {
         url: game.thumbnail
@@ -128,6 +120,10 @@ function format_message(game) {
         {
           name: `${game.start_date == null ? now_text : coming_soon_text}`,
           value: `${game.start_date == null ? game.end_date : game.start_date}`
+        },
+        {
+          name: `${game.start_date == null ? now_text : coming_soon_text}`,
+          value: `[Open in Epic Launcher](${redirect_base + game.url_slug})`
         },
       ],
     },
@@ -176,7 +172,9 @@ check_store().then(games => {
   games.forEach((game) => {
     var webhooks = discord_webhook.split(",")
     webhooks.forEach((webhook) => {
-      send_discord(game, webhook)
+      if(notify){
+        send_discord(game, webhook)
+      }
     })
   })
 })
