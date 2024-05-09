@@ -6,7 +6,7 @@ on:
     branches: ["main"]
     paths:
       - bot/src/**
-      - Dockerfile
+      - bot/Dockerfile
 
 concurrency:
   group: ${{ github.workflow }}
