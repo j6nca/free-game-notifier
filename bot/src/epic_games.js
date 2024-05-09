@@ -8,7 +8,7 @@ const redirect_base = "https://freebies.j6n.ca/redirect?game="
 // Set whether or not to show upcoming sale games Format: SEND_UPCOMING=true/false
 const sendUpcoming = process.env.SEND_UPCOMING === "true";
 // Set the target discord server(s) here. Format: DISCORD_WEBHOOK=url1,url2 ...
-const discord_webhook = process.env.DISCORD_WEBHOOK
+const discord_webhook = process.env.ENV == "dev" ? process.env.DISCORD_WEBHOOK_ME : process.env.DISCORD_WEBHOOK
 // Enable/disable notifications (primarily for testing) default: true
 const notify = process.env.NOTIFY === undefined ? true : process.env.NOTIFY === "true"
 
@@ -23,7 +23,8 @@ async function check_store() {
     var skip = true
     const title = game.title
     console.log(game.title)
-    const slug = game.catalogNs.mappings != null ? game.catalogNs.mappings[0].pageSlug : "error"
+    console.log(game.catalogNs.mappings)
+    const slug = game.catalogNs.mappings != null && game.catalogNs.mappings.length > 0 ? game.catalogNs.mappings[0].pageSlug : "error"
     console.log(slug)
     var original_price = game.price.totalPrice.fmtPrice.originalPrice
     original_price = parseFloat(original_price.replace(/[^0-9\.]+/g,"")).toFixed(2).toString()
@@ -129,10 +130,10 @@ function format_message(game) {
           name: `${game.start_date == null ? now_text : coming_soon_text}`,
           value: `${game.start_date == null ? game.end_date : game.start_date}`
         },
-        {
+        ...(game.url_slug != "error" ? [{
           name: '',
           value: `[Open in Epic Launcher](${redirect_base + game.url_slug})`
-        },
+        }] : []),
       ],
     },
   ];
