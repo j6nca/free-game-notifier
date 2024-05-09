@@ -5,8 +5,8 @@ on:
   push:
     branches: ["main"]
     paths:
-      - src/**
-      - Dockerfile
+      - bot/src/**
+      - bot/Dockerfile
 
 concurrency:
   group: ${{ github.workflow }}

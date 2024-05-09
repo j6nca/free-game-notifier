@@ -40,6 +40,8 @@ jobs:
           git config --global user.name "Github Actions"
           npm version minor
           echo "version=$(npm pkg get version | tr -d "'\"")" >> $GITHUB_OUTPUT
+          git add package.json
+          git commit -m "Bump version"
           git pull --rebase --autostash
           git push --follow-tags
 
