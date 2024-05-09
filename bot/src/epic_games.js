@@ -130,10 +130,10 @@ function format_message(game) {
           name: `${game.start_date == null ? now_text : coming_soon_text}`,
           value: `${game.start_date == null ? game.end_date : game.start_date}`
         },
-        ...(game.url_slug != "error" && {
+        ...(game.url_slug != "error" ? [{
           name: '',
           value: `[Open in Epic Launcher](${redirect_base + game.url_slug})`
-        }),
+        }] : []),
       ],
     },
   ];
