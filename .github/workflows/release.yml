@@ -42,6 +42,7 @@ jobs:
           echo "version=$(npm pkg get version | tr -d "'\"")" >> $GITHUB_OUTPUT
           git pull --rebase --autostash
           git push --follow-tags
+          git push
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3.0.0
