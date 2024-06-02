@@ -50,6 +50,15 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: npm run start
 
+      - name: bump lastrun
+        run: |
+          echo $(date) > lastrun
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add lastrun
+          git commit -m "update lastrun"
+          git push
+
       - name: Notify on failure
         if: ${{ failure() }}
         env:
