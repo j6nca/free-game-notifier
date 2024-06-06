@@ -24,10 +24,10 @@ async function check_store() {
     const title = game.title
     console.log(game.title)
     console.log(game.catalogNs.mappings)
-    const slug = game.catalogNs.mappings != null && game.catalogNs.mappings.length > 0 ? game.catalogNs.mappings[0].pageSlug : "error"
+    const slug = game.productSlug != null ? game.productSlug : game.catalogNs.mappings != null && game.catalogNs.mappings.length > 0 ? game.catalogNs.mappings[0].pageSlug : "error"
     console.log(slug)
     var original_price = game.price.totalPrice.fmtPrice.originalPrice
-    original_price = parseFloat(original_price.replace(/[^0-9\.]+/g,"")).toFixed(2).toString()
+    original_price = parseFloat(original_price.replace(/[^0-9\.]+/g, "")).toFixed(2).toString()
     const publisher = game.seller.name
     const description = game.description
     var thumbnail = game.keyImages != null ? game.keyImages[0].url : "error"
@@ -70,14 +70,14 @@ async function check_store() {
     }
 
     // Skip any false-positives (may just be on sale, or non-updated)
-    if (game.price.totalPrice.discountPrice != 0){
+    if (game.price.totalPrice.discountPrice != 0) {
       skip = true
     }
-    
-    if (!sendUpcoming && end_date == null){
+
+    if (!sendUpcoming && end_date == null) {
       skip = true
     }
-    
+
     if (!skip) {
       const found_game = {
         title: title,
@@ -93,7 +93,7 @@ async function check_store() {
     }
   })
   const ordered_game_list = game_list.sort(
-    function(a, b) {
+    function (a, b) {
       return (a.end_date === null) - (b.end_date === null) || +(a > b) || -(a < b);
     })
 
@@ -181,7 +181,7 @@ check_store().then(games => {
   games.forEach((game) => {
     var webhooks = discord_webhook.split(",")
     webhooks.forEach((webhook) => {
-      if(notify){
+      if (notify) {
         send_discord(game, webhook)
       }
     })

@@ -11,6 +11,12 @@ A script to check Epic Games store weekly for new freebies, pushes notifications
 
 ## Usage
 
+### Local
+```
+npm install
+npm run start
+```
+
 ### Docker
 ```
 docker run -e SEND_UPCOMING=true -e DISCORD_WEBHOOK='foobar' \
