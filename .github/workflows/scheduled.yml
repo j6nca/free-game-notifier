@@ -12,9 +12,9 @@ on:
   schedule:
     # - cron:  '30 23 * * THU'
     # weekly regular epic games schedule
-    - cron: '30 17 * 1-11 THU'
-    # 15 days of december mystery games (daily)
-    - cron: '30 3 12-25 12 FRI'
+    - cron: '30 17 * 1-12 THU'
+    # # 15 days of december mystery games (daily)
+    # - cron: '30 3 12-25 12 FRI'
     # - cron: '30 17 20-31 12 *'
     # - cron: '30 17 1 1 *'
 
