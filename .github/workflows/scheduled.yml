@@ -1,4 +1,4 @@
- name: Check Epic Games
+name: Check Epic Games
 on:
   workflow_dispatch:
     inputs:
